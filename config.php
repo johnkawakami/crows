@@ -103,8 +103,11 @@ $top_right_html='top right text';
  */
 
 $use_apc = function_exists('apc_fetch');
-/* All crows instances on a webserver that share a unique ID will share a cache */
-$apc_unique_id = 'crowscache_changeme'
+$memcache = false;
+// $memcache = memcache_pconnect('localhost', 11211);
+
+/* All crows instances on a webserver that share a cache ID will share a cache */
+$cacheid = "crowscache_changeme";
 
 
 /****************
