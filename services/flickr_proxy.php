@@ -27,7 +27,7 @@ curl_setopt ($curl, CURLOPT_RETURNTRANSFER, 1);
 $result = curl_exec ($curl);
 curl_close ($curl);
 
-if($has_apc) {
+if($use_apc) {
   apc_add($apc_unique_id."-flickr", $result, $flickr_ttl);
 }
 render_result($result);
