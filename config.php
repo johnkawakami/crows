@@ -242,4 +242,3 @@ if($youtube_mode=='playlist')$youtube_api_url='http://gdata.youtube.com/feeds/ap
 
 
 
-?>
