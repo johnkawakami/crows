@@ -7,6 +7,13 @@
  */
 
 include_once('../config.php');
+include('../common.php');
+send_cache_headers($youtube_ttl);
+
+if($result == cache_fetch("youtube-data")) {
+        print $result;
+        exit;
+}
 
 $curl = curl_init();
 
@@ -16,6 +23,6 @@ curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 $result = curl_exec ($curl);
 curl_close ($curl);
 
-print($result);
+cache_store("youtube-data",$result,$youtube_ttl);
 
-?>
+print($result);

@@ -127,7 +127,7 @@ $youtube_playlist_id='9AE68C8042D171F0';
 
 //video order - possible values for orderby are 'relevance', 'published', 'viewCount' and 'rating'
 $youtube_orderby='rating';
-
+$youtube_ttl=60;
 
 
 
@@ -138,7 +138,7 @@ $youtube_orderby='rating';
 //a pocast rss feed,  podcast feeds are available from podcast hosts such as libsyn.com
 
 $podcast_feed_url='http://crows.pghimc.libsynpro.com/rss';
- 
+$podcast_ttl=60; 
 
 
 
@@ -181,9 +181,8 @@ $hashtags=array(
 //master twitter account for the follow link
 $twitter_account='crowsource';
 
-//raising the cache minutes to reduce straing on twitter api (recommended 10 minutes)
-$twitter_cache_on=true;
-$twitter_cache_minutes=10;
+//raising the cache to reduce strain on twitter api (recommended 10 minutes)
+$twitter_ttl=600;
 
 
 

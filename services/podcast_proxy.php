@@ -7,6 +7,13 @@
  */
 
 include('../config.php');
+include('../common.php');
+send_cache_headers($podcast_ttl);
+
+if($result == cache_fetch("podcast-proxy")) {
+        print $result;
+        exit;
+}
 
 header("Content-type: text/xml");
 
@@ -17,6 +24,7 @@ curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 $result = curl_exec ($curl);
 curl_close ($curl);
 $result=str_replace('media:','',$result);
-print($result);
 
-?>
+cache_store("podcast-proxy", $result, $podcast_ttl);
+
+print $result;
