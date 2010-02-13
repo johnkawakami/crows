@@ -98,8 +98,13 @@ $top_right_heading='Top Right Heading';
 $top_right_html='top right text';
 
 
+/**
+ * caching modes
+ */
 
-
+$use_apc = function_exists('apc_fetch');
+/* All crows instances on a webserver that share a unique ID will share a cache */
+$apc_unique_id = 'crowscache_changeme'
 
 
 /****************
@@ -210,6 +215,9 @@ $flickr_photoset_id='';
 
 //user id  - set this if your using favorites mode,  get your flickr id here http://idgettr.com/ 
 $flickr_favorites_user_id='';
+
+//flick_ttl - the number of seconds flickr data can be cached for
+$flickr_ttl = 300;
 
 
 
