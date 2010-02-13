@@ -10,7 +10,7 @@ include('../config.php');
 include('../common.php');
 send_cache_headers($podcast_ttl);
 
-if($result == cache_fetch("podcast-proxy")) {
+if($result = cache_fetch("podcast-proxy")) {
         print $result;
         exit;
 }

@@ -11,7 +11,7 @@ include_once('../config.php');
 include('../common.php');
 send_cache_headers($twitter_ttl);
 
-if($result == cache_fetch("twitter-proxy")) {
+if($result = cache_fetch("twitter-proxy")) {
         print $result;
         exit;
 }

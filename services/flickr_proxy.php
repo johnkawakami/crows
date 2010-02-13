@@ -11,7 +11,7 @@ include_once('../common.php');
 
 send_cache_headers($flickr_ttl);
 
-if($result == cache_fetch("flickr-proxy")) {
+if($result = cache_fetch("flickr-proxy")) {
 	print $result;
 	exit;
 }

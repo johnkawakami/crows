@@ -10,7 +10,7 @@ include_once('../config.php');
 include('../common.php');
 send_cache_headers($youtube_ttl);
 
-if($result == cache_fetch("youtube-data")) {
+if($result = cache_fetch("youtube-data")) {
         print $result;
         exit;
 }
