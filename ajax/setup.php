@@ -24,7 +24,7 @@
  *  */
 
 
-if(array_key_exists($_POST['success']) && $_POST['success']) {
+if(array_key_exists('success', $_POST) && $_POST['success']) {
 echo '{ "success":"true" }';
 } else {
 echo '{ "success":"false", "message":"Something went terribly wrong" }';
