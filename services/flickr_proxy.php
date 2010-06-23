@@ -26,16 +26,18 @@
 include_once('../config.php');
 include_once('../common.php');
 
+$page=!empty($_POST['page']) ? $_POST['page'] : 1;
+
 send_cache_headers($flickr_ttl);
 
-if($result = cache_fetch("flickr-proxy")) {
+if($result = cache_fetch("flickr-proxy-page-$page")) {
 	print $result;
 	exit;
 }
 
-$page=$_POST['page'];
 $user_id=$_POST['user_id'];
 
+/* I am not sure what this functionality is but the caching has probably broken it.  FIXME */
 if($user_id){
 	$flickr_api_url='http://api.flickr.com/services/rest/?method=flickr.people.getInfo&api_key='.$flickr_api_key.'&format=json&user_id='.$user_id.'&nojsoncallback=1';
 }
@@ -47,6 +49,6 @@ curl_setopt ($curl, CURLOPT_RETURNTRANSFER, 1);
 $result = curl_exec ($curl);
 curl_close ($curl);
 
-cache_store("flickr-proxy", $result, $flickr_ttl);
+cache_store("flickr-proxy-page-$page", $result, $flickr_ttl);
 
 print $result;
