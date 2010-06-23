@@ -7,13 +7,10 @@ function send_cache_headers($ttl) {
 
 function cache_fetch($key) {
   global $use_apc;
-  global $memcache;
   global $cacheid;
 
  if($use_apc) {
     return apc_fetch($cacheid.$key);
-  } else if($memcache) {
-    return memcache_get($memcache, $cacheid.$key);
   } else {
     return false;
   }
@@ -22,13 +19,10 @@ function cache_fetch($key) {
 
 function cache_store($key, $value, $ttl) {
   global $use_apc;
-  global $memcache;
   global $cacheid;
 
   if($use_apc) {
     return apc_store($cacheid.$key, $value, $ttl);
-  } else if($memcache) {
-    return memcache_get($memcache, $cacheid.$key);
   } else {
     return false;
   }

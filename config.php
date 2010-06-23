@@ -127,8 +127,6 @@ $top_right_html='top right text';
  */
 
 $use_apc = function_exists('apc_fetch');
-$memcache = false;
-// $memcache = memcache_pconnect('localhost', 11211);
 
 /****************
 * rss news reader widget
