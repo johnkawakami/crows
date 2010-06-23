@@ -1,4 +1,3 @@
-
 <?php
 
 /*
@@ -139,4 +138,4 @@ function mobile_device_detect($iphone=true,$android=true,$opera=true,$blackberry
 
 } // ends function mobile_device_detect
 
-?>
+
