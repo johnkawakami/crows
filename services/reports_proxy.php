@@ -111,9 +111,10 @@ if (!function_exists('json_encode'))
 			
 			break;
 		case "sqlite":
-			$dbhandle = new SQLite3('../db/database.sqlite3');
+			$dbhandle = new PDO('sqlite:../db/database.sqlite3');
 			$result = $dbhandle->query('SELECT id, date, title, name, location, lat, long, report, link, photo, embed FROM reports');
-			while ($data = $result->fetchArray(SQLITE3_ASSOC)) {
+			
+			foreach($result->fetchAll() as $data) {
 				$reports['id']=$data['id'];
 				$reports['date']=$data['date'].'';
 				$reports['title']=$data['title'].'';
