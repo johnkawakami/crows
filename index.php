@@ -3,14 +3,31 @@
  * Crows - Crowd Syndication 1.0
  * Copyright 2009
  * contact@crowsne.st
- * http://www.crowsne.st/license
  */
+
+/*
+ * This file is part of Crows.
+ *
+ * Crows is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Crows is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Crows.  If not, see <http://www.gnu.org/licenses/>.
+ *  */
+
 
 include_once('config.php');
 
 //mobile detection
 include('mobile_device_detect.php');
-if(!($_GET['nomobile'])) { mobile_device_detect(true,true,true,true,true,true,'mobile/index.php',false); }
+if(array_key_exists('nomobile', $_GET) && !($_GET['nomobile'])) { mobile_device_detect(true,true,true,true,true,true,'mobile/index.php',false); }
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-loose.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="EN" lang="EN"> 
@@ -22,8 +39,8 @@ if(!($_GET['nomobile'])) { mobile_device_detect(true,true,true,true,true,true,'m
 
 	<title><?=$page_title;?></title>
 	
-	<meta name="description" content="<?=$page_description;?>" />
-	<meta name="keywords" content="<?=$page_keywords;?>" />
+	<meta name="description" content="<?=$page_description; ?>" />
+	<meta name="keywords" content="<?= $page_keywords; ?>" />
 	<meta HTTP-EQUIV="Content-Language" CONTENT="EN" />
 	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 
@@ -69,6 +86,7 @@ if(!($_GET['nomobile'])) { mobile_device_detect(true,true,true,true,true,true,'m
 	Crows.default_episode_id='<?=$default_episode_id;?>';
 	Crows.latitude=<?=$latitude;?>;
 	Crows.longitude=<?=$longitude;?>;
+	Crows.main_url='<?=$main_url;?>';
 	Crows.zoom=<?=$zoom;?>;
 	
 	<?=($default_map_type&&$map_key)?'Crows.default_map_type='.$default_map_type.';':'';?>

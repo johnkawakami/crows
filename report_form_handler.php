@@ -3,8 +3,25 @@
  * Crows - Crowd Syndication 1.0
  * Copyright 2009
  * contact@crowsne.st
- * http://www.crowsne.st/license
  */
+
+/*
+* This file is part of Crows.
+*
+* Crows is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* Crows is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with Crows.  If not, see <http://www.gnu.org/licenses/>.
+*  */
+
 
 $password=$_POST['password'];
 
@@ -31,7 +48,8 @@ if (!$resp->is_valid) {
 
 
 $report['location']=urlencode($_POST['location']);
-$report['headline']=$_POST['headline'];
+//TODO: change headline to title
+$report['title']=$_POST['headline'];
 $report['name']=$_POST['name'];
 $report['text']=$_POST['text'];
    
@@ -76,19 +94,33 @@ if (substr($data,0,3) == "200"){
 
 	
 $report['date']=date('D n/j/Y g:i a');
+$report['location'] = urldecode($report['location']);
 
   
-$line = $report['date'].'|'.$report['headline'].'|'.$report['name'].'|'.urldecode($report['location']).'|'.$report['latitude'].'|'.$report['longitude'].'|'.$report['text'].'|'.$report['link'].'|'.$report['image'].'|'.$report['embed'];
-  
+switch($database_type) {
+
+	case "csv":
+		$line = $report['date'].'|'.$report['title'].'|'.$report['name'].'|'.$report['location'].'|'.$report['latitude'].'|'.$report['longitude'].'|'.$report['text'].'|'.$report['link'].'|'.$report['image'].'|'.$report['embed'];
 
 
 
-$fp = fopen('reports.csv', 'a') or die('writefail');
 
-  
-    fputcsv($fp, split('\|', $line),'|');
+		$fp = fopen('reports.csv', 'a') or die('writefail');
 
-fclose($fp);
+
+		fputcsv($fp, split('\|', $line),'|');
+
+		fclose($fp);
+		break;
+	case "sqlite":
+			$dbhandle = new SQLite3('db/database.sqlite3');
+			//$dbhandle->exec("CREATE TABLE reports (id INTEGER PRIMARY KEY, date STRING, title STRING, name STRING, location STRING, lat STRING, long STRING, report STRING, link STRING, photo STRING, embed STRING");
+			//die("INSERT INTO reports (date, title, name, location, lat, long, report, link, photo, embed) values ('{$report['date']}','{$report['title']}','{$report['name']}','{$report['location']}','{$report['latitude']}','{$report['longitude']}','{$report['text']}','{$report['link']}','{$report['image']}','{$report['embed']}'");
+			$report = array_map("sqlite_escape_string", $report);
+			$dbhandle->exec("INSERT INTO reports (date, title, name, location, lat, long, report, link, photo, embed) values ('{$report['date']}','{$report['title']}','{$report['name']}','{$report['location']}','{$report['latitude']}','{$report['longitude']}','{$report['text']}','{$report['link']}','{$report['image']}','{$report['embed']}')");
+
+		break;
+}
 
 echo('success');
 

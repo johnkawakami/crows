@@ -5,9 +5,24 @@
  * Crows - Crowd Syndication 1.0
  * Copyright 2009
  * contact@crowsne.st
- * http://www.crowsne.st/license
  */
 
+/*
+This file is part of Crows.
+
+Crows is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Crows is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Crows.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 
 /**********************
@@ -19,20 +34,21 @@
 *    485 (single column widget) or 1000 (widgets span both columns)
 */
     
+$widgets[]=array( type => "news_reader",width => 1000, height=> 300, heading=>'News');
 
-$widgets[]=array( type => "map", width => 1000, height=> 500, heading=>'Map');
+$widgets[]=array( 'type' => 'map', 'width' => 1000, 'height' => 500, 'heading' => 'Map');
          
-$widgets[]=array( type => "reports",width => 1000, height=> 370, heading=>'Public Reports');
+$widgets[]=array( 'type' => 'reports', 'width' => 1000, 'height' => 370, 'heading' => 'Public Reports');
 
-//$widgets[]=array( type => "player", width => 480, height=> 270, heading=>'');
+//$widgets[]=array( 'type' => 'player', 'width' => 480, 'height' => 270, 'heading' =>'');
         
-$widgets[]=array( type => "youtube_playlist", width => 485, height=> 400, heading=>'YouTube');
+$widgets[]=array( 'type' => 'youtube_playlist', 'width' => 485, 'height' => 400, 'heading' => 'YouTube');
 
-$widgets[]=array( type => "podcast_playlist", width => 485, height=> 400, heading=>'Podcast');
+$widgets[]=array( 'type' => 'podcast_playlist', 'width' => 485, 'height' => 400, 'heading' => 'Podcast');
 
-$widgets[]=array( type => "twitter", width => 1000, height=> 400, heading=>'Tweets');
+$widgets[]=array( 'type' => 'twitter', 'width' => 1000, 'height' => 400, 'heading' => 'Tweets');
             
-$widgets[]=array( type => "flickr",width => 1000, height=> 500, heading=>'Flickr');
+$widgets[]=array( 'type' => 'flickr', 'width' => 1000, 'height' => 500, 'heading' => 'Flickr');
 
   
 
@@ -55,6 +71,14 @@ $recaptcha_public_key = ''; // you get this from the signup page
 //editorial message or guidlines to reporters shown in report form
 $report_form_message='* Please do not paste text copied from other websites,  use the link field to link to that page.  Also place text from word documents into a blank notepad first and recopy to remove ugly formatting.';
 $report_widget_text = 'Add to map/Reports.';
+
+//database type, you probably want sqlite unless you don't have it installed
+//
+//valid options: "sqlite", "csv"
+$database_type = "csv";
+
+//main url, used for the link in the rss feed
+$main_url = "http://crowsne.st/";
 
   
 
@@ -106,6 +130,12 @@ $use_apc = function_exists('apc_fetch');
 $memcache = false;
 // $memcache = memcache_pconnect('localhost', 11211);
 
+/****************
+* rss news reader widget
+*/
+
+$news_feed_url='http://example.com/news/feed/rss';
+
 /* All crows instances on a webserver that share a cache ID will share a cache */
 $cacheid = "crowscache_changeme";
 
@@ -119,11 +149,11 @@ $cacheid = "crowscache_changeme";
 // 'keywords' search youtube by keywords
 // 'user'  show all of a users uploaded videos 
 
-$youtube_mode='playlist';
+$youtube_mode='keywords';
 
 $youtube_user='CrowsCrowdSource';
 $youtube_keywords='crows';
-$youtube_playlist_id='9AE68C8042D171F0';
+//$youtube_playlist_id='9AE68C8042D171F0';
 
 //video order - possible values for orderby are 'relevance', 'published', 'viewCount' and 'rating'
 $youtube_orderby='rating';

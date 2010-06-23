@@ -1,10 +1,9 @@
-<?
+<?php
 /*
  * Crows - Crowd Syndication 1.0
  * Copyright 2009
  * contact@crowsne.st
  */
-
 
 /*
  * This file is part of Crows.
@@ -23,58 +22,7 @@
  * along with Crows.  If not, see <http://www.gnu.org/licenses/>.
  *  */
 
-
-
 include_once('../config.php');
-header("Content-type: text/json");
-
-//php<5.2 json_encode  compatibility function
-
-if (!function_exists('json_encode'))
-{
-  function json_encode($a=false)
-  {
-    if (is_null($a)) return 'null';
-    if ($a === false) return 'false';
-    if ($a === true) return 'true';
-    if (is_scalar($a))
-    {
-      if (is_float($a))
-      {
-        // Always use "." for floats.
-        return floatval(str_replace(",", ".", strval($a)));
-      }
-
-      if (is_string($a))
-      {
-        static $jsonReplaces = array(array("\\", "/", "\n", "\t", "\r", "\b", "\f", '"'), array('\\\\', '\\/', '\\n', '\\t', '\\r', '\\b', '\\f', '\"'));
-        return '"' . str_replace($jsonReplaces[0], $jsonReplaces[1], $a) . '"';
-      }
-      else
-        return $a;
-    }
-    $isList = true;
-    for ($i = 0, reset($a); $i < count($a); $i++, next($a))
-    {
-      if (key($a) !== $i)
-      {
-        $isList = false;
-        break;
-      }
-    }
-    $result = array();
-    if ($isList)
-    {
-      foreach ($a as $v) $result[] = json_encode($v);
-      return '[' . join(',', $result) . ']';
-    }
-    else
-    {
-      foreach ($a as $k => $v) $result[] = json_encode($k).':'.json_encode($v);
-      return '{' . join(',', $result) . '}';
-    }
-  }
-}
 
 	switch($database_type) {
 
@@ -92,7 +40,6 @@ if (!function_exists('json_encode'))
 			}
 			
 			while(($data = fgetcsv($handle, 0, "|"))!== FALSE) {
-				
 				$reports['id']=$i;
 				$reports['date']=$data[0].'';
 				$reports['title']=$data[1].'';
@@ -109,6 +56,7 @@ if (!function_exists('json_encode'))
 			}
 		 
 			
+			$array=array_reverse($array);
 			break;
 		case "sqlite":
 			$dbhandle = new SQLite3('../db/database.sqlite3');
@@ -127,18 +75,50 @@ if (!function_exists('json_encode'))
 				$reports['embed']=$data['embed'].'';
 				$array[]=$reports;
 			}
+			$array = array_reverse($array);
 			break;
 
 	}
- 
-	
-	$array=array_reverse($array);
 
-	$reportdata=json_encode($array);
-	$reportdata=str_replace('\\\\\\"','\\"',$reportdata);
 
-	$reportdata=str_replace("\\'","'",$reportdata);
-	
-	print($reportdata);
-	
-?>
+header("Content-type: text/xml");
+
+echo '<?xml version="1.0" encoding="UTF-8"?>';
+echo "\n";
+echo '<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">';
+echo "\n";
+echo '	<channel>';
+echo "\n";
+echo "		<title>$page_title</title>";
+echo "\n";
+echo "		<link>$main_url</link>";
+echo "\n";
+echo '		<atom:link type="application/rss+xml" href="';echo $main_url; echo '/rss/" rel="self"/>';
+echo "\n";
+echo "		<description>$page_description</description>";
+echo "\n";
+echo '		<language>en-us</language>';
+echo "\n";
+foreach($array as $item) {
+	echo '		<item>';
+	echo "\n";
+	echo "			<title><![CDATA[{$item['title']}]]></title>";
+	echo "\n";
+	echo "			<description><![CDATA[\"{$item['report']}\" - reported by {$item['name']}]]></description>";
+	echo "\n";
+	echo "			<pubDate>" . date(DATE_RFC2822, strtotime($item['date'])) . "</pubDate>";
+	echo "\n";
+	echo "			<guid isPermaLink=\"false\">" . md5( $main_url . $item['id']) . "</guid>";
+	echo "\n";
+	if(empty($item['link'])) {
+		echo "			<link>{$main_url}</link>";
+	} else {
+		echo "			<link>{$item['link']}</link>";
+	}
+	echo "\n";
+	echo "		</item>";
+	echo "\n";
+}
+echo "	</channel>";
+echo "\n";
+echo '</rss>';
