@@ -158,7 +158,10 @@ $youtube_orderby='rating';
 $youtube_ttl=60;
 
 
-
+// index TTL - how often the index page itself should live (in seconds) - note that
+// this really should only change when there is an edit to the site.
+$index_ttl = 600;
+ 
 /****************
 * podcast widget
 */

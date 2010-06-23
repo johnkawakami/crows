@@ -24,10 +24,13 @@
 
 
 include_once('config.php');
+include_once('common.php');
 
 //mobile detection
 include('mobile_device_detect.php');
 if(array_key_exists('nomobile', $_GET) && !($_GET['nomobile'])) { mobile_device_detect(true,true,true,true,true,true,'mobile/index.php',false); }
+
+send_cache_headers($index_ttl);
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-loose.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="EN" lang="EN"> 
