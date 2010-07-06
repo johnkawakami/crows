@@ -74,8 +74,12 @@ $report_widget_text = 'Add to map/Reports.';
 
 //database type, you probably want sqlite unless you don't have it installed
 //
-//valid options: "sqlite", "csv"
-$database_type = "csv";
+//valid options: "db", "csv"
+$database_type = "db";
+$database_dsn = "sqlite:/var/www/crows/db/database.sqlite3";
+$database_dsn = "mysql:host=localhost;dbname=crows";
+$database_user = "root";
+$database_password = false;
 
 //main url, used for the link in the rss feed
 $main_url = "http://crowsne.st/";

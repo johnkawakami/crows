@@ -79,20 +79,9 @@ if (!function_exists('json_encode'))
 	switch($database_type) {
 
 		case "csv":
-			$row = 1;
-			
-			$rowcount=count(file("../reports.csv"));
-			
 			$handle = fopen("../reports.csv", "r");
 			
-			$i=1;
-				
-			if($rowcount==0){
-				$array[0]=array('id'=>1,'title'=>'No reports yet. Make the first!'); 
-			}
-			
 			while(($data = fgetcsv($handle, 0, "|"))!== FALSE) {
-				
 				$reports['id']=$i;
 				$reports['date']=$data[0].'';
 				$reports['title']=$data[1].'';
@@ -104,16 +93,15 @@ if (!function_exists('json_encode'))
 				$reports['link']=$data[7].'';
 				$reports['photo']=$data[8].'';
 				$reports['embed']=$data[9].'';
-				$array[$i]=$reports;
-				$i++;
+				$array[]=$reports;
 			}
 		 
 			
 			break;
-		case "sqlite":
-			$dbhandle = new PDO('sqlite:../db/database.sqlite3');
-			$result = $dbhandle->query('SELECT id, date, title, name, location, lat, long, report, link, photo, embed FROM reports');
-			
+		case "db":
+			$dbhandle = new PDO($database_dsn, $database_user, $database_password);
+			$result = $dbhandle->query('SELECT id, date, title, name, location, lat, `long`, report, link, photo, embed FROM reports');
+			if(!$result) print_r($dbhandle->errorInfo());	
 			foreach($result->fetchAll() as $data) {
 				$reports['id']=$data['id'];
 				$reports['date']=$data['date'].'';
@@ -131,7 +119,9 @@ if (!function_exists('json_encode'))
 			break;
 
 	}
- 
+	if(count($array) == 0) {
+	  $array[]=array('id'=>1,'title'=>'No reports yet. Make the first!'); 
+	} 
 	
 	$array=array_reverse($array);
 
