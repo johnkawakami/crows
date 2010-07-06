@@ -47,7 +47,7 @@ if (!$resp->is_valid) {
 }
 
 
-$report['location']=urlencode($_POST['location']);
+$report['location']=$_POST['location'];
 //TODO: change headline to title
 $report['title']=$_POST['headline'];
 $report['name']=$_POST['name'];
@@ -67,7 +67,7 @@ foreach($report as $key=>$value){
 
     
 if($report['location']!=''){
-$url = "http://maps.google.com/maps/geo?q=".$report['location']."&output=csv&key=".$map_key;
+$url = "http://maps.google.com/maps/geo?q=".urlencode($report['location'])."&output=csv&key=".$map_key;
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_HEADER,0);
@@ -94,8 +94,6 @@ if (substr($data,0,3) == "200"){
 
 	
 $report['date']=date('D n/j/Y g:i a');
-$report['location'] = urldecode($report['location']);
-
   
 switch($database_type) {
 
