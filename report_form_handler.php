@@ -111,13 +111,17 @@ switch($database_type) {
 		fclose($fp);
 		break;
 	case "db":
+			$report['date'] = date("Y-m-s H:i:s", time());
 			$dbhandle = new PDO($database_dsn, $database_user, $database_password);
 			//$dbhandle->exec("CREATE TABLE reports if NOT EXISTS (id INTEGER PRIMARY KEY, date STRING, title STRING, name STRING, location STRING, lat STRING, long STRING, report STRING, link STRING, photo STRING, embed STRING");
 			//die("INSERT INTO reports (date, title, name, location, lat, long, report, link, photo, embed) values ('{$report['date']}','{$report['title']}','{$report['name']}','{$report['location']}','{$report['latitude']}','{$report['longitude']}','{$report['text']}','{$report['link']}','{$report['image']}','{$report['embed']}'");
-			$sth = $dbhandle->prepare("INSERT INTO reports (title, name, location, lat, `long`, report, link, photo, embed) VALUES (:title,:name,:location,:latitude,:longitude,:text,:link,:image,:embed)");
+			$sth = $dbhandle->prepare("INSERT INTO reports (date, title, name, location, lat, `long`, report, link, photo, embed) VALUES (:date,:title,:name,:location,:latitude,:longitude,:text,:link,:image,:embed)");
+			if(!$sth) {
+				error_log("Unable to prepare: ".print_r($dbhandle->errorInfo(), TRUE));
+			}
 			$tokens = array_intersect_key($report,
                                         array_fill_keys(
-                                                array('title','name','location','latitude','longitude','text','link','image','embed'), 1));
+                                                array('date','title','name','location','latitude','longitude','text','link','image','embed'), 1));
 			$sth->execute($tokens) || error_log("DB Error: ".print_r($sth->errorInfo(),TRUE));
 		break;
 }
