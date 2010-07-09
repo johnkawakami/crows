@@ -31,7 +31,7 @@ $page=!empty($_POST['page']) ? $_POST['page'] : 1;
 send_cache_headers($flickr_ttl);
 
 
-$flickr_request_url = flickr_api_url.'&format=json&page='.$page;
+$flickr_request_url = $flickr_api_url.'&format=json&page='.$page;
 
 if($result = cache_fetch($flickr_request_url)) {
 	print $result;
