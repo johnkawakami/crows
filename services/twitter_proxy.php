@@ -29,10 +29,6 @@ include_once('../config.php');
 include('../common.php');
 send_cache_headers($twitter_ttl);
 
-if($result = cache_fetch("twitter-proxy")) {
-        print $result;
-        exit;
-}
 
 header("Content-type: text/json");
 
@@ -42,6 +38,11 @@ $page=$_POST['page'];
 
 
 $twitterquery='http://search.twitter.com/search.json?q='.urlencode($searchterm).'&rpp=100&page='.$page;
+if($result = cache_fetch($twitterquery)) {
+        print $result;
+        exit;
+}
+
 
 //call twitter 
 $curl = curl_init();
@@ -51,5 +52,5 @@ curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 $result = curl_exec ($curl);
 curl_close ($curl);
 
-cache_store("twitter-proxy", $result, $twitter_ttl);
+cache_store($twitterquery, $result, $twitter_ttl);
 print($result);
