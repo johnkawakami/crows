@@ -1,0 +1,27 @@
+Dec. 1. 2013
+
+It's been a few years since I worked on it, and deployed it.  
+One of the reasons why I stopped was because I was starting to 
+feel a little paranoid about having people use the software,
+and thus exposing readers to a lot of data collection and data
+mining, particularly given that these pages might be used to
+record information about street protests.
+
+The way crowsnest works, even if the site hosting the software
+doesn't log traffic, all the sites included on the page will
+log all the traffic.
+
+Moreover, even if an individual company cannot notice patterns,
+a government agency that subpoenas the data can quickly correlate
+IP addresses and basically reconstruct what was seen on the page.
+
+The LA Indymedia policy is not only not to log IP addresses,
+but to discourage embedding anything into a page that may act
+like a beacon.  They can do that, but we don't really like it.
+
+That said, I'm starting to think about ways to proxy all the
+data rather than simply use javascript to include code from 
+social media sites.
+
+Additionally, it would be interesting to see if it's possible
+to replace things like GMaps with OSMaps.
